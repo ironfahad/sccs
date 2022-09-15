@@ -135,8 +135,20 @@ Logger.log(cliValueArray);
           cliOutputRange.setValue("Invalid Command Detected"); 
 
         }
+    } else if (strategicTasksSheet.getRange(e.range.getRow(), 8).getValue() == "Completed" && strategicTasksSheet.getRange(1, e.range.getColumn()).getValue() == "Status" && strategicTasksSheet.getRange(e.range.getRow(), 4).getValue() == "Update Market Research File Here") {
+
+      Logger.log("target link data row detected successfully!"); 
+
+      const statusCellValue = strategicTasksSheet.getRange(e.range.getRow(), 8).getValue(); 
+      const subTaskValue = strategicTasksSheet.getRange(e.range.getRow(), 4).getValue(); 
+      Logger.log(`status cell value is ${statusCellValue} and subtask value is ${subTaskValue} and task header value is ${taskHeaderValue}`);
+
+
     }; 
 
+     
+
+     
 };
 
 
