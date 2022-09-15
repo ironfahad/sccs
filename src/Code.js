@@ -59,6 +59,84 @@ autoNumberRange.setValue(newTaskIdNumber);
 
 dateRange.setValue(new Date()); 
 }; 
+
+const sheet = resources.strategicSS().cliSheet; 
+const cliRange = sheet.getRange(2, e.range.getColumn());  
+const cliRangeValue = cliRange.getValue(); 
+const cliColumnRange = sheet.getRange(1, e.range.getColumn()); 
+const cliColumnValue = cliColumnRange.getValue(); 
+const cliOutputRange = sheet.getRange(2, 2); 
+const cliOutputRangeValue = cliOutputRange.getValue(); 
+Logger.log(cliColumnValue); 
+Logger.log(cliRangeValue); 
+
+const cliValueArray = cliRangeValue.split(' '); 
+Logger.log(cliValueArray); 
+
+    if(cliColumnValue == 'Command') {
+
+        Logger.log("Command line interface detected"); 
+
+        if(cliValueArray[3] == "marketresearch" && cliValueArray[4] == "online") {
+
+          Logger.log("Online market research command detected")
+          cliOutputRange.clearContent(); 
+          cliOutputRange.setValue('Generating Templates...'); 
+
+          const marketResearchTemplate = '1waQ3iU9uXyZLpPCS5f04ZQ2ly8JHnKDDJLV8ZPLwjug'; 
+          const projectTrackerTemplate = '12Q8jdMavETZQ0-B-LvrMo7kfruBweVhrAjCdB5pKCtE'; 
+          const targetlistTemplate = '1a9srmldCbAfztqKl_pqWaGfN5QA7LzhyRHfJMXebKWo'; 
+          const marketingFolder = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM'; 
+
+          const newMarketProjectName = 'Online Market Research' + ' ' + cliValueArray[1] + ' ' + cliValueArray[5]
+          Logger.log(newMarketProjectName); 
+
+          const newMarketResearchFolder = DriveApp.getFolderById(marketingFolder).createFolder(newMarketProjectName); 
+          const newMarketResearchTemplate = DriveApp.getFileById(marketResearchTemplate).makeCopy(`Market Research ${cliValueArray[1]}`, newMarketResearchFolder); 
+          const newProjectTrackerTemplate = DriveApp.getFileById(projectTrackerTemplate).makeCopy(`MarketResearch Tracker ${cliValueArray[1]}`, newMarketResearchFolder); 
+          const newTargetlistTemplate = DriveApp.getFileById(targetlistTemplate).makeCopy(`Targetlist ${cliValueArray[1]} - ${cliValueArray[5]}`, newMarketResearchFolder); 
+          cliOutputRange.setValue('All files and folders generated successfully'); 
+          const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
+          const stratetgicSheetLastRowData = stratetgicSheetLastRowRange.getValues(); 
+          stratetgicSheetLastRowData[0] = Math.floor(Math.random() * 10000000000); 
+          stratetgicSheetLastRowData[1] = new Date(); 
+          stratetgicSheetLastRowData[2] = cliValueArray[1]; 
+          const newMarketResearchTemplateLink = newMarketResearchTemplate.getUrl(); 
+          stratetgicSheetLastRowData[3] = `=HYPERLINK("${newMarketResearchTemplateLink}", "Update Market Research File Here")`; 
+          stratetgicSheetLastRowData[4] = '15 mins'; 
+          stratetgicSheetLastRowData[5] = '100'; 
+          stratetgicSheetLastRowData[6] = 'Fahad'; 
+          stratetgicSheetLastRowData[7] = 'Waiting for Update'; 
+
+          Logger.log(stratetgicSheetLastRowData); 
+
+          stratetgicSheetLastRowRange.setValues([stratetgicSheetLastRowData]); 
+          cliOutputRange.setValue('Link Data Row Generated Hopefully! ;-'); 
+
+          const operationsSheet = resources.strategicSS().ss.getSheetByName('Operations'); 
+          const operationsLastRowRange = operationsSheet.getRange(operationsSheet.getLastRow() + 1, 1, 1, 9); 
+          const operationsLastRowArray = operationsLastRowRange.getValues(); 
+          operationsLastRowArray[0] = stratetgicSheetLastRowData[0]; 
+          operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
+          operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
+          operationsLastRowArray[3] = `=HYPERLINK("${newMarketResearchFolder.getUrl()}", "Project Folder")`; 
+          operationsLastRowArray[4] = `=HYPERLINK("${newTargetlistTemplate.getUrl()}","TargetList Link")`; 
+          operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
+          operationsLastRowArray[6] = 'Marketing'; 
+          operationsLastRowArray[7] = 'Online Market Research'; 
+          operationsLastRowArray[8] = 'Waiting For Market Research File Update'; 
+
+          operationsLastRowRange.setValues([operationsLastRowArray]); 
+          cliOutputRange.setValue('All Data Rows added successfully!'); 
+
+        } else {
+
+          Logger.log("Invalid command detected"); 
+          cliOutputRange.setValue("Invalid Command Detected"); 
+
+        }
+    }; 
+
 };
 
 

@@ -4,7 +4,7 @@ const resources = {
 
   // Important Spreadsheet IDs 
 
-  strategicId: '1wHJQsZAotUvlLGVYDbe-PwfZB5A8jphpIRet8DzCB6A',
+  strategicId: '1BL6_DpPiIqDv280F4Tq8zo2j9P3lyGj8ArxPiIjBrLA',
   cmykOperationsId: '1FBKUkaupI6kYf9R3TdLVkSNasRvCMZwBsjujU56X7Wk', 
   hrId: '1oj2VqcRLlnRgOm4Q8MQ7PrEHwhosJmL_QWN8kWsd0_A',
   salesId: '1AGzk6kwQXxRpvIHXEla3QXcMrUJnky9VfBF2jEQmDPc',
@@ -18,8 +18,9 @@ const resources = {
     const dataRange = sheet.getRange(2,1, sheet.getLastRow() -1, sheet.getLastColumn()); 
     const values = dataRange.getValues(); 
     const archivedTasksSheet = ss.getSheetByName('archivedTasks'); 
+    const cliSheet = ss.getSheetByName('cli'); 
 
-    return {ss, sheet, archivedTasksSheet, dataRange, values}; 
+    return {ss, sheet, archivedTasksSheet, dataRange, values, cliSheet}; 
 
   },
 
