@@ -143,6 +143,9 @@ Logger.log(cliValueArray);
       const subTaskValue = strategicTasksSheet.getRange(e.range.getRow(), 4).getValue(); 
       Logger.log(`status cell value is ${statusCellValue} and subtask value is ${subTaskValue} and task header value is ${taskHeaderValue}`);
 
+      fun.loadBalancer("Operations Executive", "Hello World"); 
+      
+
 
     }; 
 

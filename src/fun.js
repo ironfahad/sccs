@@ -259,6 +259,56 @@ const fun = {
     const taskSingleRowArray = ''; 
 
 
+  },
+
+  loadBalancer: function (jobTitle, taskArray) {
+
+    const designation = jobTitle; 
+    const arrayOfTask = taskArray; 
+
+    const employeesSheet = resources.strategicSS().ss.getSheetByName('HRM'); 
+    const employeesDataRange = employeesSheet.getRange(2, 1, employeesSheet.getLastRow() - 1, employeesSheet.getLastColumn()); 
+    const employeesDataArray = employeesDataRange.getValues(); 
+
+    const matchingEmployeesArray = employeesDataArray.filter( employee => {
+      return employee[4] === designation; 
+    }); 
+
+    const currentLoadValues = []; 
+
+    matchingEmployeesArray.forEach(employee => {
+      currentLoadValues.push(employee[9]); 
+    })
+
+    Logger.log('the current load values are'); 
+    Logger.log(currentLoadValues); 
+
+    const lowestLoadValue = Math.min(...currentLoadValues); 
+    Logger.log('The lowest load value is:'); 
+    Logger.log(lowestLoadValue); 
+    const indexOfLowestLoadValue = currentLoadValues.indexOf(lowestLoadValue); 
+    Logger.log('The index of lowest load value is: '); 
+    Logger.log(indexOfLowestLoadValue); 
+    const lowestLoadEmployeeArray = matchingEmployeesArray[indexOfLowestLoadValue]; 
+    Logger.log('The data array of employee with lowest load value'); 
+    Logger.log(lowestLoadEmployeeArray); 
+
+    lowestLoadEmployeeArray[9] = lowestLoadEmployeeArray[9] + 1; 
+    const sSLowestLoadEmployeeRange = employeesSheet.getRange(indexOfLowestLoadValue + 1, 1, 1, employeesSheet.getLastColumn()); 
+    sSLowestLoadEmployeeRange.setValues(lowestLoadEmployeeArray); 
+
+    // You need to get the right employeerange and update its value 
+
+    // Alhumdulillah Excellent work so far! the load balancer is on its way to become a power function InshAllah!
+    const targetEmployeeSpreadsheetId = lowestLoadEmployeeArray[6]; 
+    const targetEmployeeSS = SpreadsheetApp.openById(targetEmployeeSpreadsheetId); 
+    const targetEmployeeProjectsSheet = targetEmployeeSS.getSheetByName('Projects'); 
+    const LastRowRange = targetEmployeeProjectsSheet.getRange(targetEmployeeProjectsSheet.getLastRow() + 1, 1, 1, targetEmployeeProjectsSheet.getLastColumn()); 
+
+    LastRowRange.setValues(arrayOfTask);  
+
+
+
   }
 
 }; 
