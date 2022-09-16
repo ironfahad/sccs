@@ -131,6 +131,7 @@ Logger.log(cliValueArray);
 
         } else {
 
+
           Logger.log("Invalid command detected"); 
           cliOutputRange.setValue("Invalid Command Detected"); 
 
@@ -139,12 +140,35 @@ Logger.log(cliValueArray);
 
       Logger.log("target link data row detected successfully!"); 
 
-      const statusCellValue = strategicTasksSheet.getRange(e.range.getRow(), 8).getValue(); 
-      const subTaskValue = strategicTasksSheet.getRange(e.range.getRow(), 4).getValue(); 
-      Logger.log(`status cell value is ${statusCellValue} and subtask value is ${subTaskValue} and task header value is ${taskHeaderValue}`);
+      // const statusCellValue = strategicTasksSheet.getRange(e.range.getRow(), 8).getValue(); 
+      // const subTaskValue = strategicTasksSheet.getRange(e.range.getRow(), 4).getValue(); 
+      // Logger.log(`status cell value is ${statusCellValue} and subtask value is ${subTaskValue} and task header value is ${taskHeaderValue}`);
 
-      fun.loadBalancer("Operations Executive", "Hello World"); 
+      const marketResearchProjectID = fun.getEventData(e).taskID; 
+
+      Logger.log("the marketresearch project ID is" + " " + marketResearchProjectID); 
+
+      const operationsSheet = resources.strategicSS().operationsSheet; 
+      const operationsProjectsRange = operationsSheet.getRange(2, 1, operationsSheet.getLastRow() - 1, 11); 
+      const operationsProjectArray = operationsProjectsRange.getValues(); 
+
+      Logger.log('Operations total projects array will come here'); 
+      Logger.log(operationsProjectArray); 
+
+
+      const filteredMarketResearchProjectArray = operationsProjectArray.filter( project => {
+
+        return project[0] == marketResearchProjectID; 
+
+      }); 
+
+      Logger.log('filtered projects array will come here'); 
+      Logger.log(filteredMarketResearchProjectArray); 
       
+      fun.loadBalancer("Operations Executive", filteredMarketResearchProjectArray); 
+
+      Logger.log('Load Balancer executed successfully! Alhumdulillah!'); 
+
 
 
     }; 

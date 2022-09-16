@@ -19,8 +19,9 @@ const resources = {
     const values = dataRange.getValues(); 
     const archivedTasksSheet = ss.getSheetByName('archivedTasks'); 
     const cliSheet = ss.getSheetByName('cli'); 
+    const operationsSheet = ss.getSheetByName('Operations'); 
 
-    return {ss, sheet, archivedTasksSheet, dataRange, values, cliSheet}; 
+    return {ss, sheet, archivedTasksSheet, dataRange, values, cliSheet, operationsSheet}; 
 
   },
 

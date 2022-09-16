@@ -295,7 +295,7 @@ const fun = {
 
     lowestLoadEmployeeArray[9] = lowestLoadEmployeeArray[9] + 1; 
     const sSLowestLoadEmployeeRange = employeesSheet.getRange(indexOfLowestLoadValue + 1, 1, 1, employeesSheet.getLastColumn()); 
-    sSLowestLoadEmployeeRange.setValues(lowestLoadEmployeeArray); 
+    sSLowestLoadEmployeeRange.setValues([lowestLoadEmployeeArray]); 
 
     // You need to get the right employeerange and update its value 
 
@@ -304,6 +304,9 @@ const fun = {
     const targetEmployeeSS = SpreadsheetApp.openById(targetEmployeeSpreadsheetId); 
     const targetEmployeeProjectsSheet = targetEmployeeSS.getSheetByName('Projects'); 
     const LastRowRange = targetEmployeeProjectsSheet.getRange(targetEmployeeProjectsSheet.getLastRow() + 1, 1, 1, targetEmployeeProjectsSheet.getLastColumn()); 
+Logger.log('The array of task that will come at the end is'); 
+
+Logger.log(arrayOfTask); 
 
     LastRowRange.setValues(arrayOfTask);  
 
