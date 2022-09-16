@@ -292,10 +292,22 @@ const fun = {
     const lowestLoadEmployeeArray = matchingEmployeesArray[indexOfLowestLoadValue]; 
     Logger.log('The data array of employee with lowest load value'); 
     Logger.log(lowestLoadEmployeeArray); 
+    const lowestLoadEmployeeId = lowestLoadEmployeeArray[0]; 
+    Logger.log("primary index No. is: "); 
+
+    const primaryIndexOfLowestLoadEmployeeArray = employeesDataArray.indexOf(lowestLoadEmployeeArray); 
+    Logger.log(primaryIndexOfLowestLoadEmployeeArray); 
+
+
+    // There are some sort of bugs here. Find out and remove them
 
     lowestLoadEmployeeArray[9] = lowestLoadEmployeeArray[9] + 1; 
-    const sSLowestLoadEmployeeRange = employeesSheet.getRange(indexOfLowestLoadValue + 1, 1, 1, employeesSheet.getLastColumn()); 
-    sSLowestLoadEmployeeRange.setValues([lowestLoadEmployeeArray]); 
+    const sSLowestLoadEmployeeRange = employeesSheet.getRange(primaryIndexOfLowestLoadEmployeeArray + 2, 10); 
+    sSLowestLoadEmployeeRange.setValue(lowestLoadEmployeeArray[9]); 
+
+    // Endpoint where the bugs exist . Find out and remove 
+
+
 
     // You need to get the right employeerange and update its value 
 
