@@ -131,7 +131,7 @@ Logger.log(cliValueArray);
 
         } else if(cliValueArray[0] == "operations" && cliValueArray[2] == "-n" && cliValueArray[3] == "-lr"){
 
-          Logger.log('Request for new Lab Research operations project creation received!')
+          Logger.log('Request for new Lab Research operations project creation received!'); 
 
           cliOutputRange.clearContent(); 
 
@@ -176,6 +176,58 @@ Logger.log(cliValueArray);
           operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
           operationsLastRowArray[6] = 'Operations'; 
           operationsLastRowArray[7] = 'Lab Research'; 
+          operationsLastRowArray[8] = 'Waiting For Project Planning Update'; 
+
+          operationsLastRowRange.setValues([operationsLastRowArray]); 
+          cliOutputRange.setValue('All Data Rows added successfully!');
+
+        } else if(cliValueArray[0] == "operations" && cliValueArray[2] == "-n" && cliValueArray[3] == "-pp"){
+
+          Logger.log('Request for new "Pilot Project" creation received!'); 
+
+          cliOutputRange.clearContent(); 
+
+          const pilotProjectFolder = '11OYWHACViR9wawKTxCDIUcXgEe0CxoC6'; 
+          const pilotExperimentationTemplate = '1r0IZznVpvDhQ9otgoZRnnMrDZcnjS_D28_DPTLQuJaw'; 
+          const pilotPlanningTemplate = '1gCFVIa5oO2ZbO9fHPpco3bmz6re0ykb7xxhyVYpQ4Mg'; 
+          const pilotProjectTrackerTemplate = '1HqKu2zQ72Ab1H1eK6YIe_UwytA6BNILKQxxdjsygy-Q'; 
+
+          const newPilotProjectName = 'Pilot Project' + '-' + cliValueArray[1]; 
+          Logger.log(newPilotProjectName); 
+
+          const newPilotProjectFolder = DriveApp.getFolderById(pilotProjectFolder).createFolder(newPilotProjectName); 
+          const newPilotExperimentationTemplate = DriveApp.getFileById(pilotExperimentationTemplate).makeCopy(`Project Experimentation - ${cliValueArray[1]}`, newPilotProjectFolder); 
+          const newProjectTrackerTemplate = DriveApp.getFileById(pilotProjectTrackerTemplate).makeCopy(`Project Tracker - ${cliValueArray[1]}`, newPilotProjectFolder); 
+          const newProjectPlanningTemplate = DriveApp.getFileById(pilotPlanningTemplate).makeCopy(`Project Planning - ${cliValueArray[1]}`, newPilotProjectFolder); 
+          cliOutputRange.setValue('All files and folders generated successfully'); 
+          const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
+          const stratetgicSheetLastRowData = stratetgicSheetLastRowRange.getValues(); 
+          stratetgicSheetLastRowData[0] = Math.floor(Math.random() * 10000000000); 
+          stratetgicSheetLastRowData[1] = new Date(); 
+          stratetgicSheetLastRowData[2] = "Project" + " " + cliValueArray[1]; 
+          const projectPlanningTemplateLink = newProjectPlanningTemplate.getUrl(); 
+          stratetgicSheetLastRowData[3] = `=HYPERLINK("${projectPlanningTemplateLink}", "Update pilot project plan")`; 
+          stratetgicSheetLastRowData[4] = '15 mins'; 
+          stratetgicSheetLastRowData[5] = '100'; 
+          stratetgicSheetLastRowData[6] = 'Fahad'; 
+          stratetgicSheetLastRowData[7] = 'Waiting for Update'; 
+
+          Logger.log(stratetgicSheetLastRowData); 
+
+          stratetgicSheetLastRowRange.setValues([stratetgicSheetLastRowData]); 
+          cliOutputRange.setValue('Link Data Row Generated Hopefully! ;-'); 
+
+          const operationsSheet = resources.strategicSS().ss.getSheetByName('Operations'); 
+          const operationsLastRowRange = operationsSheet.getRange(operationsSheet.getLastRow() + 1, 1, 1, 9); 
+          const operationsLastRowArray = operationsLastRowRange.getValues(); 
+          operationsLastRowArray[0] = stratetgicSheetLastRowData[0]; 
+          operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
+          operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
+          operationsLastRowArray[3] = `=HYPERLINK("${newPilotProjectFolder.getUrl()}", "Project Folder")`; 
+          operationsLastRowArray[4] = `=HYPERLINK("${newPilotExperimentationTemplate.getUrl()}","Project Experimentation Link")`; 
+          operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
+          operationsLastRowArray[6] = 'Operations'; 
+          operationsLastRowArray[7] = 'Pilot Project'; 
           operationsLastRowArray[8] = 'Waiting For Project Planning Update'; 
 
           operationsLastRowRange.setValues([operationsLastRowArray]); 
