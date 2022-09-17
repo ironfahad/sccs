@@ -129,7 +129,61 @@ Logger.log(cliValueArray);
           operationsLastRowRange.setValues([operationsLastRowArray]); 
           cliOutputRange.setValue('All Data Rows added successfully!'); 
 
-        } else {
+        } else if(cliValueArray[0] == "operations" && cliValueArray[2] == "-n" && cliValueArray[3] == "-lr"){
+
+          Logger.log('Request for new Lab Research operations project creation received!')
+
+          cliOutputRange.clearContent(); 
+
+          const labResearchFolder = '12A9tA5crOip2ATiLRORhgjSNzGms3HQu'; 
+          const researchExperimentationTemplate = '1ZrVRDX6KtcLeZ2esbDnS1y8o-hvcWQ7fmmGZcJzTMRY'; 
+          const researchPlanningTemplate = '1MxDAJKBCNUorJ3zJTWmc4QmJ_QsQBvPUFnXzHspGLd4'; 
+          const labResearchProjectTrackerTemplate = '1G-QtstPq2_5otOZreilKoUd0tKfXBsiuNptvm9pi9IQ'; 
+
+          const newLabResearchProjectName = 'Lab Research Project' + '-' + cliValueArray[1]; 
+          Logger.log(newLabResearchProjectName); 
+
+          const newLabResearchFolder = DriveApp.getFolderById(labResearchFolder).createFolder(newLabResearchProjectName); 
+          const newResearchExperimentationTemplate = DriveApp.getFileById(researchExperimentationTemplate).makeCopy(`Project Experimentation - ${cliValueArray[1]}`, newLabResearchFolder); 
+          const newProjectTrackerTemplate = DriveApp.getFileById(labResearchProjectTrackerTemplate).makeCopy(`Project Tracker - ${cliValueArray[1]}`, newLabResearchFolder); 
+          const newProjectPlanningTemplate = DriveApp.getFileById(researchPlanningTemplate).makeCopy(`Project Planning - ${cliValueArray[1]}`, newLabResearchFolder); 
+          cliOutputRange.setValue('All files and folders generated successfully'); 
+          const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
+          const stratetgicSheetLastRowData = stratetgicSheetLastRowRange.getValues(); 
+          stratetgicSheetLastRowData[0] = Math.floor(Math.random() * 10000000000); 
+          stratetgicSheetLastRowData[1] = new Date(); 
+          stratetgicSheetLastRowData[2] = "Project" + " " + cliValueArray[1]; 
+          const projectPlanningTemplateLink = newProjectPlanningTemplate.getUrl(); 
+          stratetgicSheetLastRowData[3] = `=HYPERLINK("${projectPlanningTemplateLink}", "Update lab research project plan")`; 
+          stratetgicSheetLastRowData[4] = '15 mins'; 
+          stratetgicSheetLastRowData[5] = '100'; 
+          stratetgicSheetLastRowData[6] = 'Fahad'; 
+          stratetgicSheetLastRowData[7] = 'Waiting for Update'; 
+
+          Logger.log(stratetgicSheetLastRowData); 
+
+          stratetgicSheetLastRowRange.setValues([stratetgicSheetLastRowData]); 
+          cliOutputRange.setValue('Link Data Row Generated Hopefully! ;-'); 
+
+          const operationsSheet = resources.strategicSS().ss.getSheetByName('Operations'); 
+          const operationsLastRowRange = operationsSheet.getRange(operationsSheet.getLastRow() + 1, 1, 1, 9); 
+          const operationsLastRowArray = operationsLastRowRange.getValues(); 
+          operationsLastRowArray[0] = stratetgicSheetLastRowData[0]; 
+          operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
+          operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
+          operationsLastRowArray[3] = `=HYPERLINK("${newLabResearchFolder.getUrl()}", "Project Folder")`; 
+          operationsLastRowArray[4] = `=HYPERLINK("${newResearchExperimentationTemplate.getUrl()}","Project Experimentation Link")`; 
+          operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
+          operationsLastRowArray[6] = 'Operations'; 
+          operationsLastRowArray[7] = 'Lab Research'; 
+          operationsLastRowArray[8] = 'Waiting For Project Planning Update'; 
+
+          operationsLastRowRange.setValues([operationsLastRowArray]); 
+          cliOutputRange.setValue('All Data Rows added successfully!');
+
+        }
+
+        else {
 
 
           Logger.log("Invalid command detected"); 
