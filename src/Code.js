@@ -153,7 +153,7 @@ Logger.log(cliValueArray);
       const operationsProjectArray = operationsProjectsRange.getValues(); 
 
       Logger.log('Operations total projects array will come here'); 
-      Logger.log(operationsProjectArray); 
+      Logger.log(operationsProjectArray);
 
 
       const filteredMarketResearchProjectArray = operationsProjectArray.filter( project => {
@@ -165,7 +165,7 @@ Logger.log(cliValueArray);
       Logger.log('filtered projects array will come here'); 
       Logger.log(filteredMarketResearchProjectArray); 
       
-      fun.loadBalancer("Operations Executive", filteredMarketResearchProjectArray); 
+      fun.loadBalancer("Operations Executive", fun.getEventData(e).taskID); 
 
       Logger.log('Load Balancer executed successfully! Alhumdulillah!'); 
 

@@ -261,14 +261,51 @@ const fun = {
 
   },
 
-  loadBalancer: function (jobTitle, taskArray) {
+  loadBalancer: function (jobTitle, taskID) {
 
     const designation = jobTitle; 
-    const arrayOfTask = taskArray; 
+    // const arrayOfTask = taskArray; 
+    const projectId = taskID; 
 
     const employeesSheet = resources.strategicSS().ss.getSheetByName('HRM'); 
     const employeesDataRange = employeesSheet.getRange(2, 1, employeesSheet.getLastRow() - 1, employeesSheet.getLastColumn()); 
     const employeesDataArray = employeesDataRange.getValues(); 
+    const operationsSheet = resources.strategicSS().operationsSheet; 
+    const projectsRange = operationsSheet.getRange(2, 1, operationsSheet.getLastRow() - 1, 11);
+    const operationsTotalProjectsArray = projectsRange.getValues();  
+    const strategicTasksSheet = resources.strategicSS().ss.getSheetByName('Strategic Management'); 
+
+
+    // pasted code will come here 
+    
+     
+    Logger.log('load balancer projectID will come here'); 
+    Logger.log(projectId); 
+ 
+    Logger.log('Total projects Array will come here'); 
+    Logger.log(operationsTotalProjectsArray); 
+
+
+    const targetProjectArray = operationsTotalProjectsArray.filter( project => {
+    return project[0] == projectId; 
+
+    })
+    Logger.log('target project array will come here'); 
+    Logger.log(targetProjectArray); 
+
+
+    const indexOfTargetProject = operationsTotalProjectsArray.indexOf(targetProjectArray[0]); 
+    Logger.log(indexOfTargetProject); 
+
+    const targetProjectStatusRange = operationsSheet.getRange(indexOfTargetProject + 2, 9);
+    targetProjectStatusRange.setValue('Assigned To Market Researcher'); 
+
+    // Need to update this status futher when market research updates its status to Accepted 
+
+
+    // pasted code will end here 
+
+
 
     const matchingEmployeesArray = employeesDataArray.filter( employee => {
       return employee[4] === designation; 
@@ -299,28 +336,21 @@ const fun = {
     Logger.log(primaryIndexOfLowestLoadEmployeeArray); 
 
 
-    // There are some sort of bugs here. Find out and remove them
-
     lowestLoadEmployeeArray[9] = lowestLoadEmployeeArray[9] + 1; 
     const sSLowestLoadEmployeeRange = employeesSheet.getRange(primaryIndexOfLowestLoadEmployeeArray + 2, 10); 
     sSLowestLoadEmployeeRange.setValue(lowestLoadEmployeeArray[9]); 
-
-    // Endpoint where the bugs exist . Find out and remove 
-
-
-
-    // You need to get the right employeerange and update its value 
+    
 
     // Alhumdulillah Excellent work so far! the load balancer is on its way to become a power function InshAllah!
     const targetEmployeeSpreadsheetId = lowestLoadEmployeeArray[6]; 
     const targetEmployeeSS = SpreadsheetApp.openById(targetEmployeeSpreadsheetId); 
     const targetEmployeeProjectsSheet = targetEmployeeSS.getSheetByName('Projects'); 
     const LastRowRange = targetEmployeeProjectsSheet.getRange(targetEmployeeProjectsSheet.getLastRow() + 1, 1, 1, targetEmployeeProjectsSheet.getLastColumn()); 
-Logger.log('The array of task that will come at the end is'); 
+    Logger.log('The array of target project that will come at the end is'); 
 
-Logger.log(arrayOfTask); 
+    Logger.log(targetProjectArray); 
 
-    LastRowRange.setValues(arrayOfTask);  
+    LastRowRange.setValues(targetProjectArray);  
 
 
 
