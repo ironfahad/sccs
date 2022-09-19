@@ -298,7 +298,7 @@ const fun = {
     Logger.log(indexOfTargetProject); 
 
     const targetProjectStatusRange = operationsSheet.getRange(indexOfTargetProject + 2, 9);
-    targetProjectStatusRange.setValue('Assigned To Market Researcher'); 
+    targetProjectStatusRange.setValue(`Assigned to ${designation}`); 
 
     // Need to update this status futher when market research updates its status to Accepted 
 
@@ -351,6 +351,26 @@ const fun = {
     Logger.log(targetProjectArray); 
 
     LastRowRange.setValues(targetProjectArray);  
+
+    // Code for sharing documents will come here 
+
+    const targetEmployeeEmailAddress = lowestLoadEmployeeArray[7];
+    const projectFolderCellArray = operationsSheet.getRange(indexOfTargetProject + 2, 4).getFormula().split('/'); 
+    Logger.log(projectFolderCellArray); 
+    const folderLinkValue = projectFolderCellArray[5].split(','); 
+
+    const folderlinkAddress = folderLinkValue[0].slice(0, -1); 
+  
+
+    Logger.log(`folder link address is ${folderlinkAddress}`); 
+
+    
+
+
+
+
+
+    // Ends here ... 
 
 
 
