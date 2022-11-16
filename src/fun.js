@@ -364,12 +364,6 @@ const fun = {
 
     Logger.log(`folder link address is ${folderlinkAddress}`); 
 
-    
-
-
-
-
-
     // Ends here ... 
 
 
