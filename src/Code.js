@@ -241,25 +241,81 @@ Logger.log(cliValueArray);
           
           
 
-          const telecomExeCampTemplate = '1waQ3iU9uXyZLpPCS5f04ZQ2ly8JHnKDDJLV8ZPLwjug';
+          const telecomExeCampTemplate = '1oKRQP1Ih8qcuxw1fTyzTWBk6Cx6cskZ3KZ_KSsVjQV0';
           // I believe a project tracker template is reasonable essentail but may make the project more or less complex
-          const telecomCamPojectTrackerTemplate = '12Q8jdMavETZQ0-B-LvrMo7kfruBweVhrAjCdB5pKCtE'; 
-          const targetlistFileId = '1a9srmldCbAfztqKl_pqWaGfN5QA7LzhyRHfJMXebKWo'; 
-          const insideSalesExeCamTemplate = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM';
-          const marketingExeCamTemplate = ''; 
-          const telecomCamPlanningTemplate = ''; 
-          const marketingFolderId = ''; 
+          const telecomCamPojectTrackerTemplate = '1aVNuaxoR8aD844YnNt2yWAh0P_5Qp0Xkfq9wP4M0zBM'; 
+          //target list file either has to be filtered through a criteria or direct file ID needs to be provided. initially lets be simple and get the ID from the command line
+          const targetlistFileId = cliValueArray[4]; 
+          const insideSalesExeCamTemplate = '1BSCg_11JTl3ptFkpXQ8Aj5wEhMjnGYoPQ6lfVMRb1sY';
+          const marketingExeCamTemplate = '1MO7Er_BiSze58q8T0NR8iuIHRPnFn-I0S31efHhOI0w'; 
+          const telecomCamPlanningTemplate = '1cAxVFDmvrsg8Re4OHfW_pcmhLIVU5dUsOYhFfdb84bc'; 
+          const marketingFolderId = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM'; 
 
 
           const newTelecomCamName = 'Telecom Campaign' + ' ' + cliValueArray[1] + ' ' + cliValueArray[5]
           Logger.log(newTelecomCamName); 
 
           const newTelecomCamFolder = DriveApp.getFolderById(marketingFolderId).createFolder(newTelecomCamName); 
-          const newTelecomExeCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`Telecom Exe ${cliValueArray[1]}`, newTelecomCamFolder); // note that there will be multiple telecom executives. so this needs to be done in an iterator. but lets say make one then iterate over. 
-          const newInsideSalesExeCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`Insides Sales Exe ${cliValueArray[1]}`, newTelecomCamFolder); 
-          const newMarketingExeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`Marketing Exe ${cliValueArray[1]}`, newTelecomCamFolder);
+          // const newTelecomExeCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`Telecom Exe ${cliValueArray[1]}`, newTelecomCamFolder); // note that there will be multiple telecom executives. so this needs to be done in an iterator. but lets say make one then iterate over. 
+          // const newInsideSalesExeCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`Insides Sales Exe ${cliValueArray[1]}`, newTelecomCamFolder); 
+          // const newMarketingExeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`Marketing Exe ${cliValueArray[1]}`, newTelecomCamFolder);
           const duplicateTargetListFile = DriveApp.getFileById(targetlistFileId).makeCopy('Telecom Process TargetList', newTelecomCamFolder); 
           const newTelecomCamPlanFile = DriveApp.getFileById(telecomCamPlanningTemplate).makeCopy(`${cliValueArray[1]} Telecom Campaign Planning`, newTelecomCamFolder); 
+
+          // Lets iterate over all employees dataset, create, update and share files with them 
+
+          const HrmSheet = SpreadsheetApp.getActiveSpreadsheet.getSheetByName('HRM'); 
+          const HrmSheetRange = HrmSheet.getRange(2, 1, HrmSheet.getLastRow() - 1, HrmSheet.getLastColumn()); 
+          const HrmDataArray = HrmSheetRange.getValues(); 
+
+          // Here Iterate over all employees, and for each matching employee run several functionals 
+
+          HrmDataArray.forEach( employee => {
+
+            if ( employee[4] == 'Telecom Executive' && employee[5] == 'Active' && employee[9] == 0) {
+
+              // 1. create telecom campaign file 
+              const employeeName = employee[1]; 
+
+              const newTelecomCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`${cliValueArray[1]}-TE-${employee[1]}`, newTelecomCamFolder); 
+
+              // 2. get employee telecom campaign file id
+              const employeeTelecomFileId = newTelecomCamFile.getId(); 
+
+              // 3. get email address of the telecom executive 
+
+              const telecomExecEmail = employee[7]; 
+
+              // 4. share telecom campaign file with the executive
+              
+              newTelecomCamFile.addEditor(telecomExecEmail); 
+
+
+              // 5. get telem employee file id 
+              const telecomExecutiveOfficialFileId = employee[6]; 
+
+              // 6. create new campaign record in campaigns sheet of the employee
+              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(telecomExecutiveOfficialFileId).getSheetByName('Campaign'); 
+              const campaignSheetLastRowRange = telecomEmployeeCampaignSheet.getRange(telecomEmployeeCampaignSheet.getLastRow() + 1, 1, 1, telecomEmployeeCampaignSheet.getLastColumn()); 
+              const  campaignRowDataArray = campaignSheetLastRowRange.getValues(); 
+
+              // first create the telecom employee file. Add the campaign sheet. Add all the necessary columns and then start coding here further
+
+              
+              // 7. get duplicate target list file id 
+              // 8. copy next 25 records to the designated telecom file
+              // 9. delete the same records from the duplicate targetlist file 
+              // 10. Send email notification to the designated telecom executive about new campaign project 
+              // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
+
+
+
+            } 
+
+
+          })
+
+
 
 
           cliOutputRange.setValue('All files and folders generated successfully'); 
