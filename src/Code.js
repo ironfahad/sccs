@@ -233,6 +233,69 @@ Logger.log(cliValueArray);
           operationsLastRowRange.setValues([operationsLastRowArray]); 
           cliOutputRange.setValue('All Data Rows added successfully!');
 
+        } else if(cliValueArray[3] == "telecom") {
+
+          Logger.log("Telecom marketing campaign command detected")
+          cliOutputRange.clearContent(); 
+          cliOutputRange.setValue('Generating Templates...');
+          
+          
+
+          const telecomExeCampTemplate = '1waQ3iU9uXyZLpPCS5f04ZQ2ly8JHnKDDJLV8ZPLwjug';
+          // I believe a project tracker template is reasonable essentail but may make the project more or less complex
+          const telecomCamPojectTrackerTemplate = '12Q8jdMavETZQ0-B-LvrMo7kfruBweVhrAjCdB5pKCtE'; 
+          const targetlistFileId = '1a9srmldCbAfztqKl_pqWaGfN5QA7LzhyRHfJMXebKWo'; 
+          const insideSalesExeCamTemplate = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM';
+          const marketingExeCamTemplate = ''; 
+          const telecomCamPlanningTemplate = ''; 
+          const marketingFolderId = ''; 
+
+
+          const newTelecomCamName = 'Telecom Campaign' + ' ' + cliValueArray[1] + ' ' + cliValueArray[5]
+          Logger.log(newTelecomCamName); 
+
+          const newTelecomCamFolder = DriveApp.getFolderById(marketingFolderId).createFolder(newTelecomCamName); 
+          const newTelecomExeCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`Telecom Exe ${cliValueArray[1]}`, newTelecomCamFolder); // note that there will be multiple telecom executives. so this needs to be done in an iterator. but lets say make one then iterate over. 
+          const newInsideSalesExeCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`Insides Sales Exe ${cliValueArray[1]}`, newTelecomCamFolder); 
+          const newMarketingExeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`Marketing Exe ${cliValueArray[1]}`, newTelecomCamFolder);
+          const duplicateTargetListFile = DriveApp.getFileById(targetlistFileId).makeCopy('Telecom Process TargetList', newTelecomCamFolder); 
+          const newTelecomCamPlanFile = DriveApp.getFileById(telecomCamPlanningTemplate).makeCopy(`${cliValueArray[1]} Telecom Campaign Planning`, newTelecomCamFolder); 
+
+
+          cliOutputRange.setValue('All files and folders generated successfully'); 
+          const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
+          const stratetgicSheetLastRowData = stratetgicSheetLastRowRange.getValues(); 
+          stratetgicSheetLastRowData[0] = Math.floor(Math.random() * 10000000000); 
+          stratetgicSheetLastRowData[1] = new Date(); 
+          stratetgicSheetLastRowData[2] = cliValueArray[1]; 
+          const newTelecomPlanningFileLink = newTelecomCamPlanFile.getUrl(); 
+          stratetgicSheetLastRowData[3] = `=HYPERLINK("${newTelecomPlanningFileLink}", "Update Telecom Plan Data")`; 
+          stratetgicSheetLastRowData[4] = '1 hr'; 
+          stratetgicSheetLastRowData[5] = '100'; 
+          stratetgicSheetLastRowData[6] = 'Fahad'; 
+          stratetgicSheetLastRowData[7] = 'Waiting for Update'; 
+
+          Logger.log(stratetgicSheetLastRowData); 
+
+          stratetgicSheetLastRowRange.setValues([stratetgicSheetLastRowData]); 
+          cliOutputRange.setValue('Link Data Row Generated Hopefully! ;-'); 
+
+          const operationsSheet = resources.strategicSS().ss.getSheetByName('Operations'); 
+          const operationsLastRowRange = operationsSheet.getRange(operationsSheet.getLastRow() + 1, 1, 1, 9); 
+          const operationsLastRowArray = operationsLastRowRange.getValues(); 
+          operationsLastRowArray[0] = stratetgicSheetLastRowData[0]; 
+          operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
+          operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
+          operationsLastRowArray[3] = `=HYPERLINK("${newTelecomCamPlanFile.getUrl()}", "Telecom Campaign Plan")`; 
+          operationsLastRowArray[4] = `=HYPERLINK("${newTargetlistTemplate.getUrl()}","TargetList Link")`; 
+          operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
+          operationsLastRowArray[6] = 'Marketing'; 
+          operationsLastRowArray[7] = 'Online Market Research'; 
+          operationsLastRowArray[8] = 'Waiting For Market Research File Update'; 
+
+          operationsLastRowRange.setValues([operationsLastRowArray]); 
+          cliOutputRange.setValue('All Data Rows added successfully!');
+
         }
 
         else {
