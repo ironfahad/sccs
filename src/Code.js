@@ -238,8 +238,10 @@ Logger.log(cliValueArray);
           Logger.log("Telecom marketing campaign command detected")
           cliOutputRange.clearContent(); 
           cliOutputRange.setValue('Generating Templates...');
-          
-          
+
+          // New telecom campaign ID that will be used everywhere 
+
+          const newTelecomCampaignID = Math.floor(Math.random() * 10000000000); 
 
           const telecomExeCampTemplate = '1oKRQP1Ih8qcuxw1fTyzTWBk6Cx6cskZ3KZ_KSsVjQV0';
           // I believe a project tracker template is reasonable essentail but may make the project more or less complex
@@ -295,33 +297,42 @@ Logger.log(cliValueArray);
               const telecomExecutiveOfficialFileId = employee[6]; 
 
               // 6. create new campaign record in campaigns sheet of the employee
-              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(telecomExecutiveOfficialFileId).getSheetByName('Campaign'); 
+
+              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(telecomExecutiveOfficialFileId).getSheetByName('Campaigns'); 
               const campaignSheetLastRowRange = telecomEmployeeCampaignSheet.getRange(telecomEmployeeCampaignSheet.getLastRow() + 1, 1, 1, telecomEmployeeCampaignSheet.getLastColumn()); 
-              const  campaignRowDataArray = campaignSheetLastRowRange.getValues(); 
+              const  campaignRowDataArray = campaignSheetLastRowRange.getValues();
+              campaignRowDataArray[0] = newTelecomCampaignID; // campaign id column
+              campaignRowDataArray[1] = new Date(); // date column
+              campaignRowDataArray[2] = newTelecomCamName; // campaign name column
+              campaignRowDataArray[3] = 'General'; // type column 
+              campaignRowDataArray[4] = `=HYPERLINK("${newTelecomCamFile}", "Campaign TargetList File Link")`; // link 1 column
+              campaignRowDataArray[5] = ''; // link 2 column - here a link to the product knowledge and faqs should come
+              campaignRowDataArray[6] = ''; // link 3 column - here the link to the telecom script should come
+              campaignRowDataArray[7] = 'Waiting For Acceptance'; // status column 
+              
+              // here campaign id will come. generate it above the iterator 
 
               // first create the telecom employee file. Add the campaign sheet. Add all the necessary columns and then start coding here further
 
               
               // 7. get duplicate target list file id 
+              const duplicateTargetlistFileId = duplicateTargetListFile.getId(); 
+
               // 8. copy next 25 records to the designated telecom file
+
               // 9. delete the same records from the duplicate targetlist file 
               // 10. Send email notification to the designated telecom executive about new campaign project 
               // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
-
-
 
             } 
 
 
           })
 
-
-
-
           cliOutputRange.setValue('All files and folders generated successfully'); 
           const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
           const stratetgicSheetLastRowData = stratetgicSheetLastRowRange.getValues(); 
-          stratetgicSheetLastRowData[0] = Math.floor(Math.random() * 10000000000); 
+          stratetgicSheetLastRowData[0] = newTelecomCampaignID;  
           stratetgicSheetLastRowData[1] = new Date(); 
           stratetgicSheetLastRowData[2] = cliValueArray[1]; 
           const newTelecomPlanningFileLink = newTelecomCamPlanFile.getUrl(); 
