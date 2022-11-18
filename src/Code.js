@@ -249,8 +249,8 @@ Logger.log(cliValueArray);
           const telecomCamPojectTrackerTemplate = '1aVNuaxoR8aD844YnNt2yWAh0P_5Qp0Xkfq9wP4M0zBM'; 
           //target list file either has to be filtered through a criteria or direct file ID needs to be provided. initially lets be simple and get the ID from the command line
           const targetlistFileId = cliValueArray[4]; 
-          const insideSalesExeCamTemplate = '1BSCg_11JTl3ptFkpXQ8Aj5wEhMjnGYoPQ6lfVMRb1sY';
-          const marketingExeCamTemplate = '1MO7Er_BiSze58q8T0NR8iuIHRPnFn-I0S31efHhOI0w'; 
+          const insideSalesExeCamTemplate = '1IsSEbdU5fjzbT3pKIBqSVSHiZCL0JEJF1uwPwlnYFeQ';
+          const marketingExeCamTemplate = '1TBubILpHU9YQhLR9uK-feV7tE5DIEI4D1PimGFHIf7w'; 
           const telecomCamPlanningTemplate = '1cAxVFDmvrsg8Re4OHfW_pcmhLIVU5dUsOYhFfdb84bc'; 
           const marketingFolderId = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM'; 
 
@@ -363,6 +363,198 @@ Logger.log(cliValueArray);
               totaltargetlistDataRange.clearContent();
 
               updatedTargetListRange.setValues(remainingTargetListDataArray);
+              
+
+              // 10. Update load value of employee in the HRM sheet
+              
+              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
+              employeeLoadRange.setValue('1'); 
+
+              
+
+              // 10. Send email notification to the designated telecom executive about new campaign project 
+              // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
+
+            } else if ( employee[4] == 'Inside Sales Executive' && employee[5] == 'Active' && employee[9] == 0) {
+
+              // 1. create telecom campaign file 
+              const employeeName = employee[1]; 
+
+              const newInsideSalesCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`${cliValueArray[1]}-ISE-${employee[1]}`, newTelecomCamFolder); 
+
+              // 2. get employee telecom campaign file id
+
+              const employeeTelecomFileId = newInsideSalesCamFile.getId(); 
+
+              // 3. get email address of the telecom executive 
+
+              const insideSalesExeEmail = employee[7]; 
+
+              // 4. share telecom campaign file with the executive
+              
+              newInsideSalesCamFile.addEditor(insideSalesExeEmail);  
+
+
+              // 5. get telem human resource employee file id 
+
+              const insideSalesExecutiveOfficialFileId = employee[6]; 
+
+              // 6. create new campaign record in campaigns sheet of the employee
+
+              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(insideSalesExecutiveOfficialFileId).getSheetByName('Campaigns'); //sheet name verified 
+              const campaignSheetLastRowRange = telecomEmployeeCampaignSheet.getRange(telecomEmployeeCampaignSheet.getLastRow() + 1, 1, 1, telecomEmployeeCampaignSheet.getLastColumn()); 
+              const  campaignRowDataArray = campaignSheetLastRowRange.getValues();
+              campaignRowDataArray[0] = newTelecomCampaignID; // campaign id column
+              Logger.log(`telecom campaign ID check ${campaignRowDataArray[0]}`);
+              campaignRowDataArray[1] = new Date(); // date column
+              campaignRowDataArray[2] = newTelecomCamName; // campaign name column
+              campaignRowDataArray[3] = 'General'; // type column 
+              campaignRowDataArray[4] = `=HYPERLINK("${newInsideSalesCamFile.getUrl()}", "Campaign TargetList File Link")`; // link 1 column
+              campaignRowDataArray[5] = 'check'; // link 2 column - here a link to the product knowledge and faqs should come
+              campaignRowDataArray[6] = 'check'; // link 3 column - here the link to the telecom script should come
+              campaignRowDataArray[7] = 'Waiting For Acceptance'; // status column 
+
+              campaignSheetLastRowRange.setValues([campaignRowDataArray]); 
+
+
+              
+
+              // first create the telecom employee file. Add the campaign sheet. Add all the necessary columns and then start coding here further
+
+              
+              // 7. get duplicate target list file id 
+
+              // const duplicateTargetlistFileId = duplicateTargetListFile.getId(); 
+
+              // Logger.log(`Duplicate targetlist file ID check ${duplicateTargetlistFileId}`); 
+
+              // // 8. copy next 25 records to the designated telecom file
+
+              // // Source File 
+
+              // const sourceTargetlistSheet = SpreadsheetApp.openById(duplicateTargetlistFileId).getSheetByName('Sheet1'); //verified 
+              // const sourceTargetListRange = sourceTargetlistSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              // const sourceTargetListArray = sourceTargetListRange.getValues(); 
+              // const sourceTargetListTotalDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow(), sourceTargetlistSheet.getLastColumn()); 
+
+              // const remainingTargetListRange = sourceTargetlistSheet.getRange(27, 1, sourceTargetlistSheet.getLastRow() - 25, sourceTargetlistSheet.getLastColumn()); 
+              // const remainingTargetListDataArray = remainingTargetListRange.getValues(); 
+              // const updatedTargetListRange = sourceTargetlistSheet.getRange(2, 1, remainingTargetListDataArray.length, remainingTargetListDataArray[0].length); 
+
+
+              // // Target File
+
+              // const targetEmployeeTelecomFileSheet = SpreadsheetApp.openById(employeeTelecomFileId).getSheetByName('Sheet1'); 
+              // const targetEmployeeTelecomSheetRange = targetEmployeeTelecomFileSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              // const targetEmployeeTelecomDataArray = targetEmployeeTelecomSheetRange.getValues(); 
+              
+
+              // targetEmployeeTelecomSheetRange.setValues(sourceTargetListArray);
+               
+
+              // // 9. delete the same records from the duplicate targetlist file 
+
+              // const totaltargetlistDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow() + 1, sourceTargetlistSheet.getLastColumn()); 
+
+              // totaltargetlistDataRange.clearContent();
+
+              // updatedTargetListRange.setValues(remainingTargetListDataArray);
+              
+
+              // 10. Update load value of employee in the HRM sheet
+              
+              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
+              employeeLoadRange.setValue('1'); 
+
+              
+
+              // 10. Send email notification to the designated telecom executive about new campaign project 
+              // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
+
+            } else if ( employee[4] == 'Marketing Executive' && employee[5] == 'Active' && employee[9] == 0) {
+
+              // 1. create telecom campaign file 
+              const employeeName = employee[1]; 
+
+              const newMarketingexeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`${cliValueArray[1]}-ME-${employee[1]}`, newTelecomCamFolder); 
+
+              // 2. get employee telecom campaign file id
+
+              const employeeTelecomFileId = newMarketingexeCamFile.getId();  
+
+              // 3. get email address of the telecom executive 
+
+              const marketingExeEmail = employee[7]; 
+
+              // 4. share telecom campaign file with the executive
+              
+              newMarketingexeCamFile.addEditor(marketingExeEmail);   
+
+
+              // 5. get telem human resource employee file id 
+
+              const marketingExecutiveOfficialFileId = employee[6]; 
+
+              // 6. create new campaign record in campaigns sheet of the employee
+
+              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(marketingExecutiveOfficialFileId).getSheetByName('Campaigns'); //sheet name verified 
+              const campaignSheetLastRowRange = telecomEmployeeCampaignSheet.getRange(telecomEmployeeCampaignSheet.getLastRow() + 1, 1, 1, telecomEmployeeCampaignSheet.getLastColumn()); 
+              const  campaignRowDataArray = campaignSheetLastRowRange.getValues();
+              campaignRowDataArray[0] = newTelecomCampaignID; // campaign id column
+              Logger.log(`telecom campaign ID check ${campaignRowDataArray[0]}`);
+              campaignRowDataArray[1] = new Date(); // date column
+              campaignRowDataArray[2] = newTelecomCamName; // campaign name column
+              campaignRowDataArray[3] = 'General'; // type column 
+              campaignRowDataArray[4] = `=HYPERLINK("${newMarketingexeCamFile.getUrl()}", "Campaign TargetList File Link")`; // link 1 column
+              campaignRowDataArray[5] = 'check'; // link 2 column - here a link to the product knowledge and faqs should come
+              campaignRowDataArray[6] = 'check'; // link 3 column - here the link to the telecom script should come
+              campaignRowDataArray[7] = 'Waiting For Acceptance'; // status column 
+
+              campaignSheetLastRowRange.setValues([campaignRowDataArray]); 
+
+
+              
+
+              // first create the telecom employee file. Add the campaign sheet. Add all the necessary columns and then start coding here further
+
+              
+              // 7. get duplicate target list file id 
+
+              // const duplicateTargetlistFileId = duplicateTargetListFile.getId(); 
+
+              // Logger.log(`Duplicate targetlist file ID check ${duplicateTargetlistFileId}`); 
+
+              // // 8. copy next 25 records to the designated telecom file
+
+              // // Source File 
+
+              // const sourceTargetlistSheet = SpreadsheetApp.openById(duplicateTargetlistFileId).getSheetByName('Sheet1'); //verified 
+              // const sourceTargetListRange = sourceTargetlistSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              // const sourceTargetListArray = sourceTargetListRange.getValues(); 
+              // const sourceTargetListTotalDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow(), sourceTargetlistSheet.getLastColumn()); 
+
+              // const remainingTargetListRange = sourceTargetlistSheet.getRange(27, 1, sourceTargetlistSheet.getLastRow() - 25, sourceTargetlistSheet.getLastColumn()); 
+              // const remainingTargetListDataArray = remainingTargetListRange.getValues(); 
+              // const updatedTargetListRange = sourceTargetlistSheet.getRange(2, 1, remainingTargetListDataArray.length, remainingTargetListDataArray[0].length); 
+
+
+              // // Target File
+
+              // const targetEmployeeTelecomFileSheet = SpreadsheetApp.openById(employeeTelecomFileId).getSheetByName('Sheet1'); 
+              // const targetEmployeeTelecomSheetRange = targetEmployeeTelecomFileSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              // const targetEmployeeTelecomDataArray = targetEmployeeTelecomSheetRange.getValues(); 
+              
+
+              // targetEmployeeTelecomSheetRange.setValues(sourceTargetListArray);
+               
+
+              // // 9. delete the same records from the duplicate targetlist file 
+
+              // const totaltargetlistDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow() + 1, sourceTargetlistSheet.getLastColumn()); 
+
+              // totaltargetlistDataRange.clearContent();
+
+              // updatedTargetListRange.setValues(remainingTargetListDataArray);
               
 
               // 10. Update load value of employee in the HRM sheet
