@@ -313,7 +313,7 @@ Logger.log(cliValueArray);
               campaignRowDataArray[1] = new Date(); // date column
               campaignRowDataArray[2] = newTelecomCamName; // campaign name column
               campaignRowDataArray[3] = 'General'; // type column 
-              campaignRowDataArray[4] = `=HYPERLINK("${newTelecomCamFile}", "Campaign TargetList File Link")`; // link 1 column
+              campaignRowDataArray[4] = `=HYPERLINK("${newTelecomCamFile.getUrl()}", "Campaign TargetList File Link")`; // link 1 column
               campaignRowDataArray[5] = 'check'; // link 2 column - here a link to the product knowledge and faqs should come
               campaignRowDataArray[6] = 'check'; // link 3 column - here the link to the telecom script should come
               campaignRowDataArray[7] = 'Waiting For Acceptance'; // status column 
@@ -365,9 +365,12 @@ Logger.log(cliValueArray);
               updatedTargetListRange.setValues(remainingTargetListDataArray);
               
 
-              // 10. Update load value of employee in the HRM sheet 
+              // 10. Update load value of employee in the HRM sheet
+              
+              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
+              employeeLoadRange.setValue('1'); 
 
-              employee[9] = 1; 
+              
 
               // 10. Send email notification to the designated telecom executive about new campaign project 
               // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
