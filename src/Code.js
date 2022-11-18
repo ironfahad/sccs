@@ -238,6 +238,7 @@ Logger.log(cliValueArray);
           Logger.log("Telecom marketing campaign command detected")
           cliOutputRange.clearContent(); 
           cliOutputRange.setValue('Generating Templates...');
+          SpreadsheetApp.getActive().toast('Command Detected successfully!')
 
           // New telecom campaign ID that will be used everywhere 
 
@@ -261,12 +262,16 @@ Logger.log(cliValueArray);
           // const newTelecomExeCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`Telecom Exe ${cliValueArray[1]}`, newTelecomCamFolder); // note that there will be multiple telecom executives. so this needs to be done in an iterator. but lets say make one then iterate over. 
           // const newInsideSalesExeCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`Insides Sales Exe ${cliValueArray[1]}`, newTelecomCamFolder); 
           // const newMarketingExeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`Marketing Exe ${cliValueArray[1]}`, newTelecomCamFolder);
-          const duplicateTargetListFile = DriveApp.getFileById(targetlistFileId).makeCopy('Telecom Process TargetList', newTelecomCamFolder); 
+          const duplicateTargetListFile = DriveApp.getFileById(targetlistFileId).makeCopy('Telecom Duplicate TargetList', newTelecomCamFolder); 
+
+
           const newTelecomCamPlanFile = DriveApp.getFileById(telecomCamPlanningTemplate).makeCopy(`${cliValueArray[1]} Telecom Campaign Planning`, newTelecomCamFolder); 
 
           // Lets iterate over all employees dataset, create, update and share files with them 
 
-          const HrmSheet = SpreadsheetApp.getActiveSpreadsheet.getSheetByName('HRM'); 
+          SpreadsheetApp.getActive().toast('Initial Files generated successfully!')
+
+          const HrmSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('HRM'); 
           const HrmSheetRange = HrmSheet.getRange(2, 1, HrmSheet.getLastRow() - 1, HrmSheet.getLastColumn()); 
           const HrmDataArray = HrmSheetRange.getValues(); 
 
@@ -282,6 +287,7 @@ Logger.log(cliValueArray);
               const newTelecomCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`${cliValueArray[1]}-TE-${employee[1]}`, newTelecomCamFolder); 
 
               // 2. get employee telecom campaign file id
+
               const employeeTelecomFileId = newTelecomCamFile.getId(); 
 
               // 3. get email address of the telecom executive 
@@ -293,34 +299,76 @@ Logger.log(cliValueArray);
               newTelecomCamFile.addEditor(telecomExecEmail); 
 
 
-              // 5. get telem employee file id 
+              // 5. get telem human resource employee file id 
+
               const telecomExecutiveOfficialFileId = employee[6]; 
 
               // 6. create new campaign record in campaigns sheet of the employee
 
-              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(telecomExecutiveOfficialFileId).getSheetByName('Campaigns'); 
+              const telecomEmployeeCampaignSheet = SpreadsheetApp.openById(telecomExecutiveOfficialFileId).getSheetByName('Campaigns'); //sheet name verified 
               const campaignSheetLastRowRange = telecomEmployeeCampaignSheet.getRange(telecomEmployeeCampaignSheet.getLastRow() + 1, 1, 1, telecomEmployeeCampaignSheet.getLastColumn()); 
               const  campaignRowDataArray = campaignSheetLastRowRange.getValues();
               campaignRowDataArray[0] = newTelecomCampaignID; // campaign id column
+              Logger.log(`telecom campaign ID check ${campaignRowDataArray[0]}`);
               campaignRowDataArray[1] = new Date(); // date column
               campaignRowDataArray[2] = newTelecomCamName; // campaign name column
               campaignRowDataArray[3] = 'General'; // type column 
               campaignRowDataArray[4] = `=HYPERLINK("${newTelecomCamFile}", "Campaign TargetList File Link")`; // link 1 column
-              campaignRowDataArray[5] = ''; // link 2 column - here a link to the product knowledge and faqs should come
-              campaignRowDataArray[6] = ''; // link 3 column - here the link to the telecom script should come
+              campaignRowDataArray[5] = 'check'; // link 2 column - here a link to the product knowledge and faqs should come
+              campaignRowDataArray[6] = 'check'; // link 3 column - here the link to the telecom script should come
               campaignRowDataArray[7] = 'Waiting For Acceptance'; // status column 
+
+              campaignSheetLastRowRange.setValues([campaignRowDataArray]); 
+
+
               
-              // here campaign id will come. generate it above the iterator 
 
               // first create the telecom employee file. Add the campaign sheet. Add all the necessary columns and then start coding here further
 
               
               // 7. get duplicate target list file id 
+
               const duplicateTargetlistFileId = duplicateTargetListFile.getId(); 
+
+              Logger.log(`Duplicate targetlist file ID check ${duplicateTargetlistFileId}`); 
 
               // 8. copy next 25 records to the designated telecom file
 
+              // Source File 
+
+              const sourceTargetlistSheet = SpreadsheetApp.openById(duplicateTargetlistFileId).getSheetByName('Sheet1'); //verified 
+              const sourceTargetListRange = sourceTargetlistSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              const sourceTargetListArray = sourceTargetListRange.getValues(); 
+              const sourceTargetListTotalDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow(), sourceTargetlistSheet.getLastColumn()); 
+
+              const remainingTargetListRange = sourceTargetlistSheet.getRange(27, 1, sourceTargetlistSheet.getLastRow() - 25, sourceTargetlistSheet.getLastColumn()); 
+              const remainingTargetListDataArray = remainingTargetListRange.getValues(); 
+              const updatedTargetListRange = sourceTargetlistSheet.getRange(2, 1, remainingTargetListDataArray.length, remainingTargetListDataArray[0].length); 
+
+
+              // Target File
+
+              const targetEmployeeTelecomFileSheet = SpreadsheetApp.openById(employeeTelecomFileId).getSheetByName('Sheet1'); 
+              const targetEmployeeTelecomSheetRange = targetEmployeeTelecomFileSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              const targetEmployeeTelecomDataArray = targetEmployeeTelecomSheetRange.getValues(); 
+              
+
+              targetEmployeeTelecomSheetRange.setValues(sourceTargetListArray);
+               
+
               // 9. delete the same records from the duplicate targetlist file 
+
+              const totaltargetlistDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow() + 1, sourceTargetlistSheet.getLastColumn()); 
+
+              totaltargetlistDataRange.clearContent();
+
+              updatedTargetListRange.setValues(remainingTargetListDataArray);
+              
+
+              // 10. Update load value of employee in the HRM sheet 
+
+              employee[9] = 1; 
+
               // 10. Send email notification to the designated telecom executive about new campaign project 
               // 11. optional create training file and add the link to the campaign record in the campaign sheet of the employee 
 
@@ -328,6 +376,8 @@ Logger.log(cliValueArray);
 
 
           })
+
+          SpreadsheetApp.getActive().toast('Array Iterator ran successfully MashAllah!'); 
 
           cliOutputRange.setValue('All files and folders generated successfully'); 
           const stratetgicSheetLastRowRange = strategicTasksSheet.getRange(strategicTasksSheet.getLastRow() + 1, 1, 1, 8); 
@@ -354,14 +404,18 @@ Logger.log(cliValueArray);
           operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
           operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
           operationsLastRowArray[3] = `=HYPERLINK("${newTelecomCamPlanFile.getUrl()}", "Telecom Campaign Plan")`; 
-          operationsLastRowArray[4] = `=HYPERLINK("${newTargetlistTemplate.getUrl()}","TargetList Link")`; 
-          operationsLastRowArray[5] = `=HYPERLINK("${newProjectTrackerTemplate.getUrl()}", "Project Tracker Link")`; 
+          operationsLastRowArray[4] = 'Check'; 
+          operationsLastRowArray[5] = 'Check'; 
           operationsLastRowArray[6] = 'Marketing'; 
           operationsLastRowArray[7] = 'Online Market Research'; 
           operationsLastRowArray[8] = 'Waiting For Market Research File Update'; 
 
           operationsLastRowRange.setValues([operationsLastRowArray]); 
-          cliOutputRange.setValue('All Data Rows added successfully!');
+
+          SpreadsheetApp.getActive().toast('All Data Entries Added successfully!');
+          SpreadsheetApp.getActive().toast('Operation Completed Successfully'); 
+
+          cliOutputRange.setValue('All Telecom data Rows added successfully!');
 
         }
 
