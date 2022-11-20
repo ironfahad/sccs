@@ -367,8 +367,15 @@ Logger.log(cliValueArray);
 
               // 10. Update load value of employee in the HRM sheet
               
-              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
-              employeeLoadRange.setValue('1'); 
+              const employeeDataUpdateRange = HrmSheet.getRange(employee[0] + 1, 10, 1, 4);
+              const  employeeDataUpdateArray = employeeDataUpdateRange.getValues(); 
+
+              employeeDataUpdateArray[0][0] = 1; 
+              employeeDataUpdateArray[0][1] = 1; 
+              employeeDataUpdateArray[0][2] = newTelecomCampaignID; 
+              employeeDataUpdateArray[0][3] = newTelecomCamName; 
+              
+              employeeDataUpdateRange.setValues(employeeDataUpdateArray); 
 
               
 
@@ -463,8 +470,15 @@ Logger.log(cliValueArray);
 
               // 10. Update load value of employee in the HRM sheet
               
-              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
-              employeeLoadRange.setValue('1'); 
+              const employeeDataUpdateRange = HrmSheet.getRange(employee[0] + 1, 10, 1, 4);
+              const  employeeDataUpdateArray = employeeDataUpdateRange.getValues(); 
+
+              employeeDataUpdateArray[0][0] = 1; 
+              employeeDataUpdateArray[0][1] = 1; 
+              employeeDataUpdateArray[0][2] = newTelecomCampaignID; 
+              employeeDataUpdateArray[0][3] = newTelecomCamName; 
+              
+              employeeDataUpdateRange.setValues(employeeDataUpdateArray); 
 
               
 
@@ -557,10 +571,20 @@ Logger.log(cliValueArray);
               // updatedTargetListRange.setValues(remainingTargetListDataArray);
               
 
-              // 10. Update load value of employee in the HRM sheet
+              // 10. Update load, max load, campaign id and campaign name values of employee in the HRM sheet
               
-              const employeeLoadRange = HrmSheet.getRange(employee[0] + 1, 10); 
-              employeeLoadRange.setValue('1'); 
+              const employeeDataUpdateRange = HrmSheet.getRange(employee[0] + 1, 10, 1, 4);
+              const  employeeDataUpdateArray = employeeDataUpdateRange.getValues(); 
+
+              employeeDataUpdateArray[0][0] = 1; 
+              employeeDataUpdateArray[0][1] = 1; 
+              employeeDataUpdateArray[0][2] = newTelecomCampaignID; 
+              employeeDataUpdateArray[0][3] = newTelecomCamName; 
+              
+              employeeDataUpdateRange.setValues(employeeDataUpdateArray); 
+
+
+              // 
 
               
 
