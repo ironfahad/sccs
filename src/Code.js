@@ -623,7 +623,7 @@ Logger.log(cliValueArray);
           operationsLastRowArray[1] = stratetgicSheetLastRowData[1]; 
           operationsLastRowArray[2] = stratetgicSheetLastRowData[2]; 
           operationsLastRowArray[3] = `=HYPERLINK("${newTelecomCamPlanFile.getUrl()}", "Telecom Campaign Plan")`; 
-          operationsLastRowArray[4] = 'Check'; 
+          operationsLastRowArray[4] = `=HYPERLINK("${duplicateTargetListFile.getUrl()}","Process TargetList File")`;  
           operationsLastRowArray[5] = 'Check'; 
           operationsLastRowArray[6] = 'Marketing'; 
           operationsLastRowArray[7] = 'Online Market Research'; 
