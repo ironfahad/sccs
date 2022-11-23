@@ -283,8 +283,10 @@ Logger.log(cliValueArray);
 
               // 1. create telecom campaign file 
               const employeeName = employee[1]; 
+              const employeeId = employee[0]; 
+              // const employeeDesignatedCampaignId = employee[11];
 
-              const newTelecomCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`${cliValueArray[1]}-TE-${employee[1]}`, newTelecomCamFolder); 
+              const newTelecomCamFile = DriveApp.getFileById(telecomExeCampTemplate).makeCopy(`${cliValueArray[1]}-TE-${employee[1]}-${employeeId}-${newTelecomCampaignID}`, newTelecomCamFolder); 
 
               // 2. get employee telecom campaign file id
 
@@ -386,8 +388,9 @@ Logger.log(cliValueArray);
 
               // 1. create telecom campaign file 
               const employeeName = employee[1]; 
+              const employeeId = employee[0]
 
-              const newInsideSalesCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`${cliValueArray[1]}-ISE-${employee[1]}`, newTelecomCamFolder); 
+              const newInsideSalesCamFile = DriveApp.getFileById(insideSalesExeCamTemplate).makeCopy(`${cliValueArray[1]}-ISE-${employee[1]}-${employeeId}-${newTelecomCampaignID}`, newTelecomCamFolder); 
 
               // 2. get employee telecom campaign file id
 
@@ -489,8 +492,9 @@ Logger.log(cliValueArray);
 
               // 1. create telecom campaign file 
               const employeeName = employee[1]; 
+              const employeeId = employee[0]; 
 
-              const newMarketingexeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`${cliValueArray[1]}-ME-${employee[1]}`, newTelecomCamFolder); 
+              const newMarketingexeCamFile = DriveApp.getFileById(marketingExeCamTemplate).makeCopy(`${cliValueArray[1]}-ME-${employee[1]}-${employeeId}-${newTelecomCampaignID}`, newTelecomCamFolder); 
 
               // 2. get employee telecom campaign file id
 
