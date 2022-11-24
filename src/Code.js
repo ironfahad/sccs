@@ -296,9 +296,15 @@ Logger.log(cliValueArray);
 
               const telecomExecEmail = employee[7]; 
 
-              // 4. share telecom campaign file with the executive
+              // 4. share telecom campaign file with the executive & strategic management file with the executive
               
               newTelecomCamFile.addEditor(telecomExecEmail); 
+              strategicSpreadsheetFile = DriveApp.getFileById('1BL6_DpPiIqDv280F4Tq8zo2j9P3lyGj8ArxPiIjBrLA'); 
+              strategicSpreadsheetFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.EDIT); 
+
+
+               
+
 
 
               // 5. get telem human resource employee file id 
@@ -403,6 +409,8 @@ Logger.log(cliValueArray);
               // 4. share telecom campaign file with the executive
               
               newInsideSalesCamFile.addEditor(insideSalesExeEmail);  
+              newInsideSalesCamFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.EDIT); 
+
 
 
               // 5. get telem human resource employee file id 
@@ -507,6 +515,7 @@ Logger.log(cliValueArray);
               // 4. share telecom campaign file with the executive
               
               newMarketingexeCamFile.addEditor(marketingExeEmail);   
+              newMarketingexeCamFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.EDIT); 
 
 
               // 5. get telem human resource employee file id 
