@@ -249,8 +249,8 @@ Logger.log(cliValueArray);
           const telecomCamPojectTrackerTemplate = '1aVNuaxoR8aD844YnNt2yWAh0P_5Qp0Xkfq9wP4M0zBM'; 
           //target list file either has to be filtered through a criteria or direct file ID needs to be provided. initially lets be simple and get the ID from the command line
           const targetlistFileId = cliValueArray[4]; 
-          const insideSalesExeCamTemplate = '1IsSEbdU5fjzbT3pKIBqSVSHiZCL0JEJF1uwPwlnYFeQ';
-          const marketingExeCamTemplate = '1TBubILpHU9YQhLR9uK-feV7tE5DIEI4D1PimGFHIf7w'; 
+          const insideSalesExeCamTemplate = '1d1eMypMocgas6z3nnLfS8kq0LPIQlTlppnjZWp9k6ng';
+          const marketingExeCamTemplate = '12TQfqmsYv7xJInsJP7tCc4zqZlcyoG0iOQj78jxonSo'; 
           const telecomCamPlanningTemplate = '1cAxVFDmvrsg8Re4OHfW_pcmhLIVU5dUsOYhFfdb84bc'; 
           const marketingFolderId = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM'; 
 

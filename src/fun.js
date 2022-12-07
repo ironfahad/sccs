@@ -9,9 +9,30 @@ const fun = {
     targetCellRange.setValue(message); 
 
 
-  },
+  },l: function (desc1, value1, desc2, value2, desc3, value3, desc4, value4, desc5, value5, desc6, value6) {
 
-  findTargetEmployeeSpreadSheet: function (employeeName) {
+
+    // A powerful logging function for diagnostic purpose 
+
+    Logger.log(desc1); 
+    Logger.log(value1); 
+
+    Logger.log(desc2); 
+    Logger.log(value2);
+
+    Logger.log(desc3); 
+    Logger.log(value3);
+
+    Logger.log(desc4); 
+    Logger.log(value4);
+
+    Logger.log(desc5); 
+    Logger.log(value5);
+
+    Logger.log(desc6); 
+    Logger.log(value6);
+
+  }, findTargetEmployeeSpreadSheet: function (employeeName) {
 
     const nameOfEmployee = employeeName; 
     const employeesArray = resources.hrSS().employeesDataValues; 
