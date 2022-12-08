@@ -249,9 +249,9 @@ Logger.log(cliValueArray);
           const telecomCamPojectTrackerTemplate = '1aVNuaxoR8aD844YnNt2yWAh0P_5Qp0Xkfq9wP4M0zBM'; 
           //target list file either has to be filtered through a criteria or direct file ID needs to be provided. initially lets be simple and get the ID from the command line
           const targetlistFileId = cliValueArray[4]; 
-          const insideSalesExeCamTemplate = '1d1eMypMocgas6z3nnLfS8kq0LPIQlTlppnjZWp9k6ng';
-          const marketingExeCamTemplate = '12TQfqmsYv7xJInsJP7tCc4zqZlcyoG0iOQj78jxonSo'; 
-          const telecomCamPlanningTemplate = '1cAxVFDmvrsg8Re4OHfW_pcmhLIVU5dUsOYhFfdb84bc'; 
+          const insideSalesExeCamTemplate = '16KmIHLZXmwcmphmaqY-WEm99n-B0Qh92nojW7CzjaCQ'; // This is the campaign template for ISE
+          const marketingExeCamTemplate = '1gmHL4U8l599pWwaWJDxHM_Riy7u5mTM3bJiYABWeQiI'; // Marketing Executive campaign template 
+          const telecomCamPlanningTemplate = '1cAxVFDmvrsg8Re4OHfW_pcmhLIVU5dUsOYhFfdb84bc'; // Telecom Executive campaign template 
           const marketingFolderId = '1u1F9ACnpd2hqKhV-loX5mSS8-Pf_7-OM'; 
 
 
@@ -291,7 +291,7 @@ Logger.log(cliValueArray);
               // 2. get employee telecom campaign file id
 
               const employeeTelecomFileId = newTelecomCamFile.getId(); 
-
+ 
               // 3. get email address of the telecom executive 
 
               const telecomExecEmail = employee[7]; 
@@ -342,14 +342,21 @@ Logger.log(cliValueArray);
 
               // 8. copy next 25 records to the designated telecom file
 
-              // Source File 
+              // Get Source data 
 
               const sourceTargetlistSheet = SpreadsheetApp.openById(duplicateTargetlistFileId).getSheetByName('Sheet1'); //verified 
-              const sourceTargetListRange = sourceTargetlistSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              const sourceTargetListRange = sourceTargetlistSheet.getRange(2, 1, 25, 8); 
               const sourceTargetListArray = sourceTargetListRange.getValues(); 
               const sourceTargetListTotalDataRange = sourceTargetlistSheet.getRange(2, 1, sourceTargetlistSheet.getLastRow(), sourceTargetlistSheet.getLastColumn()); 
 
-              const remainingTargetListRange = sourceTargetlistSheet.getRange(27, 1, sourceTargetlistSheet.getLastRow() - 25, sourceTargetlistSheet.getLastColumn()); 
+              // // Get source formulas 
+
+              // const sourceTargetListFormulasRange = sourceTargetlistSheet.getRange(2, 10, 25, sourceTargetlistSheet.getLastColumn() ); 
+              // const sourceTargetListFormulasArray = sourceTargetListFormulasRange.getFormulas();  
+
+              // Get deletion target list range 
+
+              const remainingTargetListRange = sourceTargetlistSheet.getRange(27, 1, sourceTargetlistSheet.getLastRow() - 25, 8); 
               const remainingTargetListDataArray = remainingTargetListRange.getValues(); 
               const updatedTargetListRange = sourceTargetlistSheet.getRange(2, 1, remainingTargetListDataArray.length, remainingTargetListDataArray[0].length); 
 
@@ -357,11 +364,22 @@ Logger.log(cliValueArray);
               // Target File
 
               const targetEmployeeTelecomFileSheet = SpreadsheetApp.openById(employeeTelecomFileId).getSheetByName('Sheet1'); 
-              const targetEmployeeTelecomSheetRange = targetEmployeeTelecomFileSheet.getRange(2, 1, 25, sourceTargetlistSheet.getLastColumn()); 
+              const targetEmployeeTelecomSheetRange = targetEmployeeTelecomFileSheet.getRange(2, 1, 25, 8); 
               const targetEmployeeTelecomDataArray = targetEmployeeTelecomSheetRange.getValues(); 
-              
+
+               
+
+              // Set target sheet data 
 
               targetEmployeeTelecomSheetRange.setValues(sourceTargetListArray);
+
+              // Set target sheet formulas 
+
+              // const targetEmployeeCamsheetRange = targetEmployeeTelecomFileSheet.getRange(2, 10, 25, targetEmployeeTelecomFileSheet.getLastColumn()); 
+              // const allowRule = SpreadsheetApp.newDataValidation().setAllowInvalid(true).build(); 
+              // targetEmployeeCamsheetRange.setDataValidation(allowRule); 
+
+              // targetEmployeeCamsheetRange.setFormulas(sourceTargetListFormulasArray); 
                
 
               // 9. delete the same records from the duplicate targetlist file 
